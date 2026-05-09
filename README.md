@@ -123,3 +123,5 @@ Our custom frontend design system abandons generic Tailwind in favor of a bespok
 ## 🤝 Contribution
 Developed with ❤️ for the **University Governance Hackathon**. 
 **UniGov Team 2025**
+
+NOTICE: The project is in early access, it was done in 25 hours straight, so a lot of things may seem broken or unfinished.  
