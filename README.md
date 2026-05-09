@@ -5,12 +5,12 @@
 [![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![ChromaDB](https://img.shields.io/badge/Vector%20DB-ChromaDB-blue?style=for-the-badge)](https://www.trychroma.com/)
 
-**UniGov** is a next-generation Strategic Operating System designed to empower university networks with real-time intelligence, automated governance, and AI-driven decision-making. 
+**UniGov (U-OS)** is the "Central Brain" for the university ecosystem. It transforms scattered, unstructured data into actionable intelligence across 30+ institutions, enabling AI-driven governance and strategic decision-making.
 
 ---
 
 ## 📸 Overview
-UniGov transforms raw institutional data into actionable strategy. Whether managing 30+ institutions or a single campus, UniGov provides a "Single Source of Truth" for KPIs, alerts, and strategic roadmaps.
+UniGov addresses the core institutional bottleneck: data is no longer a liability; it is a strategic asset. Whether managing a network of institutions or a single campus, UniGov provides a "Single Source of Truth" for KPIs, alerts, and strategic roadmaps.
 
 ### 🧩 System Architecture
 
@@ -22,42 +22,61 @@ graph TD
     subgraph "Data Layer"
         Backend -->|Query/Update| DB[(Supabase/Postgres)]
         Backend -->|Vector Search| VDB[(ChromaDB)]
+        Backend -->|Queue| Redis[(Redis)]
     end
     
     subgraph "AI & Automation"
-        Backend -->|RAG / Analysis| LLM[LLM: GPT-4o / Gemini]
-        Backend -->|Webhooks| n8n[n8n Workflows]
-        n8n -->|Notifications| Email[Email / Slack]
+        Backend -->|RAG / Analysis| LLM[LLM: GPT-4o]
+        Backend -->|OCR| OCR[PyTesseract / PDF2Image]
+        Backend -->|Forecasting| ML[Prophet / SciPy]
+        Backend -->|Tasks| Celery[Celery Workers]
     end
 ```
 
 ---
 
-## ✨ Core Pillars
+## ✨ The 4 Core Tracks
 
-### 1. 🧠 AI-Driven Intelligence (The Brain)
-*   **Context-Aware Assistant**: Not just a chatbot, but a Strategic Assistant that "reads" your institutional policies (via RAG) and "sees" your live metrics.
-*   **Anomaly Engine**: Uses statistical analysis to flag deviations in student success, finance, or ESG metrics before they become crises.
-*   **What-If Simulator**: A predictive sandbox where leaders can simulate the impact of budget reallocations on academic outcomes.
+### 1. 📥 Track 1: Smart Data Engine (Ingestion)
+*   **Omni-Channel Ingestion**: Upload institutional PDFs, CSVs, or scanned images.
+*   **AI-OCR Pipeline**: Automated text extraction using PyTesseract with image preprocessing. Uses GPT-4o to "clean" and validate OCR output before database insertion.
+*   **Structured Intelligence**: Parses unstructured text into standardized JSON for Student, HR, Finance, ESG, and Infrastructure domains, normalizing dates and monetary values.
 
-### 2. 📊 High-Fidelity Observability
-*   **Global Command Center**: A bird's-eye view of all 30+ institutions in the network.
-*   **Interactive KPI Manager**: Track academic success, financial execution, HR turnover, and ESG goals with beautiful, interactive visualizations.
-*   **Alerts Center**: Severity-based alerting system that keeps decision-makers focused on what matters most.
+### 2. 🧠 Track 2: AI Decision Engine (Analytics)
+*   **Proactive Anomaly Detection**: Uses statistical analysis (Z-score thresholds via SciPy/Statsmodels) combined with LLM explanations to detect "spending leaks" or "academic drops."
+*   **Predictive Forecasting**: Multi-step time-series forecasting using **Prophet** to predict future KPI trends.
+*   **"What-If" Simulator**: A correlation engine (using NumPy) that allows leaders to simulate the impact of budget reallocations on academic outcomes.
+*   **Strategic Benchmarking & ESG Optimizer**: Analyzes metrics to generate customized sustainability roadmaps and strategic advice.
 
-### 3. 📄 Smart Governance & Reporting
-*   **Intelligent Ingestion**: Upload institutional PDFs or CSVs; the system extracts relevant data points and indexes policy text for the AI Assistant.
-*   **Automated Strategic Reports**: Generate comprehensive monthly or annual reports with one click, complete with AI-generated "Executive Summaries."
+### 3. 💬 Track 3: Natural Language AI Assistant (Interaction)
+*   **Context-Aware Assistant**: A RAG-powered interface (using ChromaDB) that "reads" institutional policies and "sees" live metrics.
+*   **Automated Reporting**: Generate comprehensive monthly reports with one click, complete with AI-generated Executive Summaries.
+
+### 4. 🌐 Track 4: Multi-Institution Layer (Platform)
+*   **Secure Multi-Tenancy**: Data isolation for each institution within a shared infrastructure.
+*   **Global Export System**: Instant PDF/Excel generation for reporting and audits.
 
 ---
 
-## 👥 User Personas
+## 👥 Role-Based Access Control (RBAC Matrix)
 
-| Role | Capabilities |
-| :--- | :--- |
-| **Super Admin** | Full network control, user management, and global policy setting. |
-| **Institution Admin** | Management of a specific campus, detailed KPI tracking, and local alerts. |
-| **Strategic Agent** | Data analysis, report generation, and AI-assisted policy review. |
+UniGov enforces strict data segregation and routing security:
+
+| Role | Capabilities | Visibility |
+| :--- | :--- | :--- |
+| **Super Admin** | Full network control, user management, analytics, global policy setting. | Global Dashboard (All 30+ Institutions) |
+| **Agent** | Analyst access, AI Assistant, Analytics. Cannot manage users. | Global Dashboard |
+| **Admin** | Management of a specific campus, local KPI tracking, and alerts. | Locked to assigned `institution_id` |
+
+---
+
+## 🎨 UI/UX: The "Sovereign Executive" Design System
+Our custom frontend design system abandons generic Tailwind in favor of a bespoke, high-fidelity **Corporate Modern** aesthetic tailored for high-stakes decision-making.
+
+*   **Fixed-Fluid Hybrid Layout**: A permanent "Command Center" navigation (260px sidebar) paired with a fluid max-1440px data canvas.
+*   **Color Strategy**: Deep Navy (`#1B3A6B`) for stability, contrasted by Gold Accents (`#C8972A`) for high-priority insights, set against an expansive Gray 50 background.
+*   **Typography**: *Plus Jakarta Sans* for commanding, executive headers, paired with *Inter* for dense, high-legibility data tables.
+*   **Tonal Layering**: Ambient navy-tinted shadows define the Z-axis, lifting critical cards without adding visual clutter.
 
 ---
 
@@ -66,9 +85,9 @@ graph TD
 | Endpoint | Method | Description |
 | :--- | :--- | :--- |
 | `/api/v1/dashboard/global` | `GET` | Fetch top-level metrics for the entire network. |
-| `/api/v1/ai/prompt` | `POST` | Interact with the UniGov Strategic Assistant. |
-| `/api/v1/analytics/what-if` | `POST` | Run correlation-based simulations between KPIs. |
-| `/api/v1/ingestion/upload` | `POST` | Upload and process institutional data files. |
+| `/api/v1/ai/prompt` | `POST` | Interact with the UniGov Strategic Assistant (RAG). |
+| `/api/v1/analytics/what-if` | `POST` | Run Pearson correlation-based simulations between KPIs. |
+| `/api/v1/ingestion/upload` | `POST` | Upload and process files through the AI-OCR pipeline. |
 | `/api/v1/alerts/active` | `GET` | List all unacknowledged critical alerts. |
 
 ---
@@ -76,19 +95,20 @@ graph TD
 ## 🚀 Quick Start
 
 ### Backend (The Core)
-1. **Setup Env**: Copy `.env.example` to `.env` and fill in your Supabase and LLM keys.
-2. **Install**: `pip install -r requirements.txt`
-3. **Initialize**: 
+1. **Setup Env**: Copy `.env.example` to `.env` and fill in your Supabase and OpenAI keys.
+2. **Install Dependencies**: `pip install -r requirements.txt`
+3. **Initialize Database & Seed**: 
    ```bash
-   python seed_data.py   # Populates 12 months of historical data
-   python create_admin.py # Creates your superadmin account
+   python seed_data.py        # Populates 12 months of historical data
+   python create_admin.py     # Creates your superadmin account
+   python create_test_users.py # Creates RBAC test accounts (admin/agent)
    ```
-4. **Launch**: `uvicorn app.main:app --reload`
+4. **Launch Server**: `uvicorn app.main:app --reload`
 
 ### Frontend (The UI)
-1. **Install**: `npm install`
-2. **Launch**: `npm start`
-3. **Login**: Use `admin@unigov.tn` with the password set in `create_admin.py`.
+1. **Install Dependencies**: `npm install`
+2. **Launch App**: `npm start`
+3. **Login**: Use test credentials seeded in the backend.
 
 ---
 
