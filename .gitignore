@@ -1,0 +1,100 @@
+# ======================
+# Python / FastAPI
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+MANIFEST
+.installed.cfg
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+.Python
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables (NEVER commit these)
+.env
+.env.*
+!.env.example
+
+# Database files
+*.sqlite3
+*.sqlite3-journal
+*.db
+
+# Logs
+*.log
+
+# Test / Coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# ======================
+# Angular / Node
+# ======================
+node_modules/
+dist/
+.angular/
+*.tsbuildinfo
+coverage/
+package-lock.json
+
+# ======================
+# IDE & Editor Settings
+# ======================
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ======================
+# Operating System
+# ======================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ======================
+# Project-Specific
+# ======================
+# SQL dump files with potentially sensitive data
+stitch_u_os_UI/full.sql
+
+# Frontend build artifacts
+frontend/dist/
